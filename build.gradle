@@ -1,19 +1,49 @@
 plugins {
-    id 'java'
+    id 'idea'
+    id 'java-library'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
 }
+
+apply plugin: 'org.openjfx.javafxplugin'
 
 group 'com.github.bricklou'
 version '1.0.0'
 
 repositories {
     mavenCentral()
+    maven {
+        url = 'https://jitpack.io/'
+        name = 'JitPack'
+    }
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation 'de.jensd:fontawesomefx-fontawesome:4.7.0-9.1.2'
+
+    implementation 'fr.flowarg:flowupdater:1.3.+'
+    implementation 'fr.flowarg:openlauncherlib:3.+'
 }
 
-test {
-    useJUnitPlatform()
+javafx {
+    version = 12
+    modules = ['javafx.controls']
+}
+
+application {
+    getMainClass().set('com.github.bricklou.launchertuto.Main')
+}
+
+compileJava {
+    options.encoding = "UTF-8"
+}
+
+jar {
+    manifest.attributes.put('Main-Class', 'com.github.bricklou.launchertuto.Main')
+
+    from {
+        configurations.compileClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
 }
