@@ -6,7 +6,7 @@ les potentiels mise à jour apportées par rapport au code présenté dans les v
 
 ## Tutoriaux
 
-#### 01 - Introduction et configuration du projet
+#### [01 - Introduction et configuration du projet](https://github.com/Bricklou/javafx-launcher/tree/video-1)
 
 C'est le point de départ de la série. On met en place le projet et on configure Gradle.
 
