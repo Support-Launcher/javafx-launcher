@@ -10,7 +10,7 @@ les potentiels mise à jour apportées par rapport au code présenté dans les v
 
 C'est le point de départ de la série. On met en place le projet et on configure Gradle.
 
-[Tutoriel Vidéo (bientôt)]()
+[Tutoriel Vidéo](https://youtu.be/h1J7lJs--L8)
 
 ## Crédits
 
