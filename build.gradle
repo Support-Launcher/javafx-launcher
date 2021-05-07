@@ -23,11 +23,13 @@ dependencies {
 
     implementation 'fr.flowarg:flowupdater:1.3.+'
     implementation 'fr.flowarg:openlauncherlib:3.+'
+
+    implementation group: 'com.github.goxr3plus', name: 'FX-BorderlessScene', version: '4.4.0'
 }
 
 javafx {
     version = 12
-    modules = ['javafx.controls']
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.web']
 }
 
 application {
