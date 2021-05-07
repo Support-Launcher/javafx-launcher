@@ -12,6 +12,12 @@ C'est le point de départ de la série. On met en place le projet et on configur
 
 [Tutoriel Vidéo](https://youtu.be/h1J7lJs--L8)
 
+#### [02 - Création de la fenêtre](https://github.com/Bricklou/javafx-launcher/tree/video-2)
+
+Les bases de code pour afficher la fenêtre et gérer le contenu sont créés. La prochaine étape sera d'afficher le menu de connexion.
+
+[Tutoriel Vidéo](https://youtu.be/-8wNd0xtj5U)
+
 ## Crédits
 
 Merci à [Flow Arg](https://github.com/FlowArg) pour ses librairies et pour m'avoir accompagnés tout au long des vidéos. 
