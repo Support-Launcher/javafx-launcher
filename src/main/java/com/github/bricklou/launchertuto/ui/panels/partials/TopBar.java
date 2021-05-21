@@ -26,6 +26,7 @@ public class TopBar extends Panel {
         super.init(panelManager);
         this.topBar = this.layout;
         this.layout.setStyle("-fx-background-color: rgb(35, 40, 40);");
+        setCanTakeAllWidth(this.topBar);
 
         /*
          * TopBar separation
