@@ -22,6 +22,11 @@ public class TopBar extends Panel {
     }
 
     @Override
+    public String getStylesheetPath() {
+        return null;
+    }
+
+    @Override
     public void init(PanelManager panelManager) {
         super.init(panelManager);
         this.topBar = this.layout;
@@ -40,7 +45,7 @@ public class TopBar extends Panel {
         this.layout.getChildren().add(imageView);
 
         // TopBar: center
-        Label title = new Label("JavaFx Flow-Updater Launcher");
+        Label title = new Label("JavaFx Launcher");
         title.setFont(Font.font("Consolas", FontWeight.BOLD, FontPosture.REGULAR, 18f));
         title.setStyle("-fx-text-fill: white;");
         setCenterH(title);

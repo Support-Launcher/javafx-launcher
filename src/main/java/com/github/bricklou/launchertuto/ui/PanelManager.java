@@ -9,6 +9,7 @@ import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -58,12 +59,20 @@ public class PanelManager {
             topBar.init(this);
         }
 
+        this.layout.add(this.contentPane, 0, 1);
+        GridPane.setVgrow(this.contentPane, Priority.ALWAYS);
+        GridPane.setHgrow(this.contentPane, Priority.ALWAYS);
+
         this.stage.show();
     }
 
     public void showPanel(IPanel panel) {
         this.contentPane.getChildren().clear();
         this.contentPane.getChildren().add(panel.getLayout());
+        if (panel.getStylesheetPath() != null) {
+            this.stage.getScene().getStylesheets().clear();
+            this.stage.getScene().getStylesheets().add(panel.getStylesheetPath());
+        }
         panel.init(this);
         panel.onShow();
     }
