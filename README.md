@@ -18,6 +18,12 @@ Les bases de code pour afficher la fenêtre et gérer le contenu sont créés. L
 
 [Tutoriel Vidéo](https://youtu.be/-8wNd0xtj5U)
 
+#### [03 - Page de connexion](https://github.com/Bricklou/javafx-launcher/tree/video-3)
+
+On met en place la fenêtre de connexion. Pour le moment, seul la connexion via Mojang fonctionne.
+
+[Tutorial Vidéo](https://youtu.be/w-YbZnLFWlQ)
+
 ## Crédits
 
 Merci à [Flow Arg](https://github.com/FlowArg) pour ses librairies et pour m'avoir accompagnés tout au long des vidéos. 
