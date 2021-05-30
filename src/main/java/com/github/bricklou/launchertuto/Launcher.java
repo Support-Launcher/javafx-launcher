@@ -1,6 +1,7 @@
 package com.github.bricklou.launchertuto;
 
 import com.github.bricklou.launchertuto.ui.PanelManager;
+import com.github.bricklou.launchertuto.ui.panels.pages.App;
 import com.github.bricklou.launchertuto.ui.panels.pages.Login;
 import com.github.bricklou.launchertuto.utils.Helpers;
 import fr.flowarg.flowlogger.ILogger;
@@ -17,11 +18,11 @@ import javafx.stage.Stage;
 import java.io.File;
 
 public class Launcher extends Application {
-    private PanelManager panelManager;
     private static Launcher instance;
     private final ILogger logger;
     private final File launcherDir = Helpers.generateGamePath("launcher-fx");
     private final Saver saver;
+    private PanelManager panelManager;
     private AuthProfile authProfile = null;
 
     public Launcher() {
@@ -36,7 +37,11 @@ public class Launcher extends Application {
         saver = new Saver(new File(launcherDir, "config.properties"));
         saver.load();
     }
-    
+
+    public static Launcher getInstance() {
+        return instance;
+    }
+
     @Override
     public void start(Stage stage) {
         this.logger.info("Starting launcher");
@@ -45,6 +50,8 @@ public class Launcher extends Application {
 
         if (this.isUserAlreadyLoggedIn()) {
             logger.info("Hello " + authProfile.getName());
+
+            this.panelManager.showPanel(new App());
         } else {
             this.panelManager.showPanel(new Login());
         }
@@ -55,7 +62,7 @@ public class Launcher extends Application {
             Authenticator authenticator = new Authenticator(Authenticator.MOJANG_AUTH_URL, AuthPoints.NORMAL_AUTH_POINTS);
 
             try {
-                RefreshResponse response  = authenticator.refresh(saver.get("accessToken"), saver.get("clientToken"));
+                RefreshResponse response = authenticator.refresh(saver.get("accessToken"), saver.get("clientToken"));
                 saver.set("accessToken", response.getAccessToken());
                 saver.set("clientToken", response.getClientToken());
                 saver.save();
@@ -67,25 +74,24 @@ public class Launcher extends Application {
                 saver.remove("clientToken");
                 saver.save();
             }
+        } else if (saver.get("offline-username") != null) {
+            this.authProfile = new AuthProfile(saver.get("offline-username"), null);
+            return true;
         }
 
         return false;
-    }
-
-    public void setAuthProfile(AuthProfile authProfile) {
-        this.authProfile = authProfile;
     }
 
     public AuthProfile getAuthProfile() {
         return authProfile;
     }
 
+    public void setAuthProfile(AuthProfile authProfile) {
+        this.authProfile = authProfile;
+    }
+
     public ILogger getLogger() {
         return logger;
-    }
-    
-    public static Launcher getInstance() {
-        return instance;
     }
 
     public Saver getSaver() {

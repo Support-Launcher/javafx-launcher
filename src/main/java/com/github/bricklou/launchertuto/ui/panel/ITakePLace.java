@@ -12,7 +12,7 @@ public interface ITakePLace {
 
     default void setCanTakeAllWidth(Node... nodes) {
         for (Node n : nodes) {
-            GridPane.setVgrow(n, Priority.ALWAYS);
+            GridPane.setHgrow(n, Priority.ALWAYS);
         }
     }
 }

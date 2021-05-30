@@ -24,6 +24,12 @@ On met en place la fenêtre de connexion. Pour le moment, seul la connexion via 
 
 [Tutorial Vidéo](https://youtu.be/w-YbZnLFWlQ)
 
+#### [04 - Connexion crack et menu de navigation](https://github.com/Bricklou/javafx-launcher/tree/video-4)
+
+On voit comment mettre en place la connexion offline (crack) et on commence les pages principales avec le menu de navigation.
+
+[Tutorial Vidéo](https://youtu.be/QRRhgtg7pJ0)
+
 ## Crédits
 
 Merci à [Flow Arg](https://github.com/FlowArg) pour ses librairies et pour m'avoir accompagnés tout au long des vidéos. 

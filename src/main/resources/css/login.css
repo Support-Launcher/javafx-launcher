@@ -62,3 +62,21 @@
 .login-with-label {
     -fx-text-fill: rgb(20, 25, 25);
 }
+
+.login-mode-chk {
+    -fx-text-fill: rgb(20, 25, 25);
+}
+
+.login-mode-chk .box {
+    -fx-border-width: 0;
+    -fx-border-radius: 10px;
+    -fx-background-color: rgb(220, 225, 225);
+}
+
+.login-mode-chk:selected .box {
+    -fx-background-color: #98BB6D;
+}
+
+.login-mode-chk:selected .box .mark {
+    visibility: hidden;
+}
