@@ -6,9 +6,11 @@ import com.github.bricklou.launchertuto.ui.panel.Panel;
 import fr.litarvan.openauth.AuthPoints;
 import fr.litarvan.openauth.AuthenticationException;
 import fr.litarvan.openauth.Authenticator;
+import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.litarvan.openauth.model.AuthAgent;
 import fr.litarvan.openauth.model.AuthProfile;
 import fr.litarvan.openauth.model.response.AuthResponse;
+import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import fr.theshark34.openlauncherlib.util.Saver;
 import javafx.geometry.HPos;
 import javafx.scene.control.*;
@@ -183,8 +185,7 @@ public class Login extends Panel {
         msLoginBtn.setMaxWidth(300);
         msLoginBtn.setTranslateY(165d);
         msLoginBtn.setGraphic(view);
-        msLoginBtn.setOnMouseClicked(e -> {
-        });
+        msLoginBtn.setOnMouseClicked(e -> this.authenticateMS());
 
         loginCard.getChildren().addAll(userField, userErrorLabel, passwordField, passwordErrorLabel, authModeChk, btnLogin, separator, loginWithLabel, msLoginBtn);
     }
@@ -212,9 +213,16 @@ public class Login extends Panel {
                 saver.set("clientToken", response.getClientToken());
                 saver.save();
 
-                Launcher.getInstance().setAuthProfile(response.getSelectedProfile());
+                AuthInfos infos = new AuthInfos(
+                        response.getSelectedProfile().getName(),
+                        response.getAccessToken(),
+                        response.getClientToken(),
+                        response.getSelectedProfile().getId()
+                );
 
-                this.logger.info("Hello " + response.getSelectedProfile().getName());
+                Launcher.getInstance().setAuthInfos(infos);
+
+                this.logger.info("Hello " + infos.getUsername());
 
                 panelManager.showPanel(new App());
             } catch (AuthenticationException e) {
@@ -225,14 +233,41 @@ public class Login extends Panel {
                 alert.show();
             }
         } else {
-            AuthProfile profile = new AuthProfile(userField.getText(), null);
-            saver.set("offline-username", profile.getName());
+            AuthInfos infos = new AuthInfos(
+                    userField.getText(),
+                    null,
+                    null
+            );
+            saver.set("offline-username", infos.getUsername());
             saver.save();
-            Launcher.getInstance().setAuthProfile(profile);
+            Launcher.getInstance().setAuthInfos(infos);
 
-            this.logger.info("Hello " + profile.getName());
+            this.logger.info("Hello " + infos.getUsername());
 
             panelManager.showPanel(new App());
         }
+    }
+
+    public void authenticateMS() {
+        MicrosoftAuthenticator authenticator = new MicrosoftAuthenticator();
+        authenticator.loginWithAsyncWebview().whenComplete((response, error) -> {
+            if (error != null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erreur");
+                alert.setContentText(error.getMessage());
+                alert.show();
+                return;
+            }
+
+            saver.set("msAccessToken", response.getAccessToken());
+            saver.set("msRefreshToken", response.getRefreshToken());
+            saver.save();
+            Launcher.getInstance().setAuthInfos(new AuthInfos(
+                    response.getProfile().getName(),
+                    response.getAccessToken(),
+                    response.getProfile().getId()
+            ));
+            this.logger.info("Hello " + response.getProfile().getName());
+        });
     }
 }
