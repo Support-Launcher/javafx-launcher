@@ -30,6 +30,12 @@ On voit comment mettre en place la connexion offline (crack) et on commence les 
 
 [Tutorial Vidéo](https://youtu.be/QRRhgtg7pJ0)
 
+#### [05 - Authentification Microsoft et menu de paramètres](https://github.com/Bricklou/javafx-launcher/tree/video-5)
+
+On configure enfin la connexion avec les comptes Microsoft et on crée la page de paramètres
+
+[Tutorial Vidéo](https://youtu.be/60NHnNsRANU)
+
 ## Crédits
 
 Merci à [Flow Arg](https://github.com/FlowArg) pour ses librairies et pour m'avoir accompagnés tout au long des vidéos. 

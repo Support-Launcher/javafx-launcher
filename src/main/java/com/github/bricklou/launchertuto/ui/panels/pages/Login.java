@@ -190,13 +190,13 @@ public class Login extends Panel {
         loginCard.getChildren().addAll(userField, userErrorLabel, passwordField, passwordErrorLabel, authModeChk, btnLogin, separator, loginWithLabel, msLoginBtn);
     }
 
-    public void updateLoginBtnState(TextField textField, Label erroLabel) {
+    public void updateLoginBtnState(TextField textField, Label errorLabel) {
         if (offlineAuth.get() && textField == passwordField) return;
 
         if (textField.getText().length() == 0) {
-            erroLabel.setText("Le champ ne peut être vide");
+            errorLabel.setText("Le champ ne peut être vide");
         } else {
-            erroLabel.setText("");
+            errorLabel.setText("");
         }
 
         btnLogin.setDisable(!(userField.getText().length() > 0 && (offlineAuth.get() || passwordField.getText().length() > 0)));
