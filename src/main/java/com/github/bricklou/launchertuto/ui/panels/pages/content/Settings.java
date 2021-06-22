@@ -77,19 +77,19 @@ public class Settings extends ContentPanel {
         for(int i = 512; i <= Math.ceil(memory.getTotal() / Math.pow(1024, 2)); i+=512) {
             comboBox.getItems().add(i/1024.0+" Go");
         }
+
         double val = 1024;
-        if(saver.get("maxRam") != null){
-            try {
-                val = Double.parseDouble(saver.get("maxRam"))*1024;
-            } catch (NumberFormatException error) {
-                saver.set("maxRam", String.valueOf(val));
-                saver.save();
+        try {
+            if (saver.get("maxRam") != null) {
+                val = Double.parseDouble(saver.get("maxRam")) * 1024;
+            } else {
+                throw new NumberFormatException();
             }
-            
-        }else {
+        } catch (NumberFormatException error) {
             saver.set("maxRam", String.valueOf(val));
             saver.save();
         }
+
         if (comboBox.getItems().contains(val/1024.0+" Go")) {
             comboBox.setValue(val / 1024.0 + " Go");
         } else {
