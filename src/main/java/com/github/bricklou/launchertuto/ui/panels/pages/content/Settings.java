@@ -78,9 +78,15 @@ public class Settings extends ContentPanel {
             comboBox.getItems().add(i/1024.0+" Go");
         }
         double val = 1024;
-        try {
-            val = Double.parseDouble(saver.get("maxRam"));
-        } catch (NumberFormatException error) {
+        if(saver.get("maxRam") != null){
+            try {
+                val = Double.parseDouble(saver.get("maxRam"))*1024;
+            } catch (NumberFormatException error) {
+                saver.set("maxRam", String.valueOf(val));
+                saver.save();
+            }
+            
+        }else {
             saver.set("maxRam", String.valueOf(val));
             saver.save();
         }
