@@ -78,10 +78,10 @@ public class Settings extends ContentPanel {
             comboBox.getItems().add(i/1024.0+" Go");
         }
 
-        double val = 1024;
+        int val = 1024;
         try {
             if (saver.get("maxRam") != null) {
-                val = Double.parseDouble(saver.get("maxRam")) * 1024;
+                val = Integer.parseInt(saver.get("maxRam"));
             } else {
                 throw new NumberFormatException();
             }
@@ -114,7 +114,11 @@ public class Settings extends ContentPanel {
         setCanTakeAllSize(saveBtn);
         setBottom(saveBtn);
         setCenterH(saveBtn);
-        saveBtn.setOnMouseClicked(e -> saver.set("maxRam", comboBox.getValue().replace(" Go", "")));
+        saveBtn.setOnMouseClicked(e -> {
+            double _val = Double.parseDouble(comboBox.getValue().replace(" Go", ""));
+            _val *= 1024;
+            saver.set("maxRam", String.valueOf((int) _val));
+        });
         contentPane.getChildren().add(saveBtn);
     }
 }

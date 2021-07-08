@@ -2,8 +2,9 @@ package com.github.bricklou.launchertuto.ui.panels.pages;
 
 import com.github.bricklou.launchertuto.Launcher;
 import com.github.bricklou.launchertuto.ui.PanelManager;
-import com.github.bricklou.launchertuto.ui.panel.IPanel;
 import com.github.bricklou.launchertuto.ui.panel.Panel;
+import com.github.bricklou.launchertuto.ui.panels.pages.content.ContentPanel;
+import com.github.bricklou.launchertuto.ui.panels.pages.content.Home;
 import com.github.bricklou.launchertuto.ui.panels.pages.content.Settings;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -26,6 +27,7 @@ public class App extends Panel {
     GridPane navContent = new GridPane();
 
     Node activeLink = null;
+    ContentPanel currentPage = null;
 
     Button homeBtn, settingsBtn;
 
@@ -96,7 +98,7 @@ public class App extends Panel {
         setCanTakeAllSize(homeBtn);
         setTop(homeBtn);
         homeBtn.setTranslateY(90d);
-        homeBtn.setOnMouseClicked(e -> setPage(null, homeBtn));
+        homeBtn.setOnMouseClicked(e -> setPage(new Home(), homeBtn));
 
         settingsBtn = new Button("Paramètres");
         settingsBtn.getStyleClass().add("sidemenu-nav-btn");
@@ -151,6 +153,9 @@ public class App extends Panel {
         logoutBtn.getStyleClass().add("logout-btn");
         logoutBtn.setGraphic(logoutIcon);
         logoutBtn.setOnMouseClicked(e -> {
+            if (currentPage instanceof Home && ((Home) currentPage).isDownloading()) {
+                return;
+            }
             saver.remove("accessToken");
             saver.remove("clientToken");
             saver.remove("offline-username");
@@ -166,10 +171,13 @@ public class App extends Panel {
     @Override
     public void onShow() {
         super.onShow();
-        setPage(null, homeBtn);
+        setPage(new Home(), homeBtn);
     }
 
-    public void setPage(IPanel panel, Node navButton) {
+    public void setPage(ContentPanel panel, Node navButton) {
+        if (currentPage instanceof Home && ((Home) currentPage).isDownloading()) {
+            return;
+        }
         if (activeLink != null)
             activeLink.getStyleClass().remove("active");
         activeLink = navButton;
@@ -178,6 +186,7 @@ public class App extends Panel {
         this.navContent.getChildren().clear();
         if (panel != null) {
             this.navContent.getChildren().add(panel.getLayout());
+            currentPage = panel;
             if (panel.getStylesheetPath() != null) {
                 this.panelManager.getStage().getScene().getStylesheets().clear();
                 this.panelManager.getStage().getScene().getStylesheets().addAll(
