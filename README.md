@@ -36,6 +36,12 @@ On configure enfin la connexion avec les comptes Microsoft et on crée la page d
 
 [Tutorial Vidéo](https://youtu.be/60NHnNsRANU)
 
+#### [06 - Mise à jours et lancement du jeu](https://github.com/Bricklou/javafx-launcher/tree/video-6)
+
+On entame la mise à jour et le lancement du jeu.  
+
+[Tutorial Vidéo](https://youtu.be/kkQh2ZrcznM)
+
 ## Crédits
 
 Merci à [Flow Arg](https://github.com/FlowArg) pour ses librairies et pour m'avoir accompagnés tout au long des vidéos. 
