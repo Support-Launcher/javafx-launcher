@@ -158,34 +158,34 @@ public class Home extends ContentPanel {
     }
 
     public void startGame(String gameVersion) {
-        File gameFolder = Launcher.getInstance().getLauncherDir().toFile();
-
         GameInfos infos = new GameInfos(
                 "Launcher",
-                gameFolder,
+                true,
                 new GameVersion(gameVersion, GameType.V1_13_HIGHER_VANILLA),
                 new GameTweak[]{}
         );
 
-        Thread t = new Thread(() -> {
-            try {
-                ExternalLaunchProfile profile = MinecraftLauncher.createExternalProfile(infos, GameFolder.FLOW_UPDATER, Launcher.getInstance().getAuthInfos());
-                profile.getVmArgs().add(this.getRamArgsFromSaver());
-                ExternalLauncher launcher = new ExternalLauncher(profile);
+        try {
+            ExternalLaunchProfile profile = MinecraftLauncher.createExternalProfile(infos, GameFolder.FLOW_UPDATER, Launcher.getInstance().getAuthInfos());
+            profile.getVmArgs().add(this.getRamArgsFromSaver());
+            ExternalLauncher launcher = new ExternalLauncher(profile);
 
-                Process p = launcher.launch();
+            Process p = launcher.launch();
 
-                p.waitFor();
+            Platform.runLater(() -> {
+                try {
+                    p.waitFor();
+                    Platform.exit();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            Launcher.getInstance().getLogger().err(exception.toString());
+        }
 
-                System.exit(0);
-            } catch (Exception exception) {
-                exception.printStackTrace();
-                Launcher.getInstance().getLogger().err(exception.toString());
-            }
-        });
-        t.start();
-
-        Platform.exit();
+        panelManager.getStage().hide();
     }
 
     public String getRamArgsFromSaver() {
