@@ -33,14 +33,14 @@ public class Launcher extends Application {
 
     public Launcher() {
         instance = this;
-        this.logger = new Logger("[LauncherFX]", Path.of(this.launcherDir.toString(), "launcher.log"));
+        this.logger = new Logger("[LauncherFX]", this.launcherDir.resolve("launcher.log"));
         if (!this.launcherDir.toFile().exists()) {
             if (!this.launcherDir.toFile().mkdir()) {
                 this.logger.err("Unable to create launcher folder");
             }
         }
 
-        saver = new Saver(Path.of(launcherDir.toString(), "config.properties"));
+        saver = new Saver(this.launcherDir.resolve("config.properties"));
         saver.load();
     }
 
