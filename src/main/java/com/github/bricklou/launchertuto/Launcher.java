@@ -3,7 +3,6 @@ package com.github.bricklou.launchertuto;
 import com.github.bricklou.launchertuto.ui.PanelManager;
 import com.github.bricklou.launchertuto.ui.panels.pages.App;
 import com.github.bricklou.launchertuto.ui.panels.pages.Login;
-import com.github.bricklou.launchertuto.utils.Helpers;
 import fr.flowarg.flowlogger.ILogger;
 import fr.flowarg.flowlogger.Logger;
 import fr.litarvan.openauth.AuthPoints;
@@ -14,6 +13,7 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.litarvan.openauth.model.response.RefreshResponse;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
+import fr.theshark34.openlauncherlib.minecraft.util.GameDirGenerator;
 import fr.theshark34.openlauncherlib.util.Saver;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -26,7 +26,7 @@ import java.util.UUID;
 public class Launcher extends Application {
     private static Launcher instance;
     private final ILogger logger;
-    private final Path launcherDir = Path.of(Helpers.generateGamePath("launcher-fx").getPath());
+    private final Path launcherDir = GameDirGenerator.createGameDir("launcher-fx", true);
     private final Saver saver;
     private PanelManager panelManager;
     private AuthInfos authInfos = null;
@@ -40,7 +40,7 @@ public class Launcher extends Application {
             }
         }
 
-        saver = new Saver(Path.of(launcherDir.toString(), "config.properties").toFile());
+        saver = new Saver(Path.of(launcherDir.toString(), "config.properties"));
         saver.load();
     }
 

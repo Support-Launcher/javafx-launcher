@@ -27,6 +27,8 @@ dependencies {
     implementation 'de.jensd:fontawesomefx-fontawesome:4+'
 
     implementation 'fr.flowarg:flowupdater:1+'
+    implementation 'fr.flowarg:flowupdater-curseforgeplugin:2+'
+    implementation 'fr.flowarg:flowupdater-optifineplugin:2+'
     implementation 'fr.flowarg:openlauncherlib:3+'
 
     implementation 'com.github.goxr3plus:FX-BorderlessScene:4+'

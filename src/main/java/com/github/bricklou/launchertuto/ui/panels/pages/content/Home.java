@@ -1,14 +1,20 @@
 package com.github.bricklou.launchertuto.ui.panels.pages.content;
 
 import com.github.bricklou.launchertuto.Launcher;
+import com.github.bricklou.launchertuto.game.MinecraftInfos;
 import com.github.bricklou.launchertuto.ui.PanelManager;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.download.IProgressCallback;
 import fr.flowarg.flowupdater.download.Step;
+import fr.flowarg.flowupdater.download.json.CurseFileInfos;
+import fr.flowarg.flowupdater.download.json.Mod;
+import fr.flowarg.flowupdater.download.json.OptifineInfo;
+import fr.flowarg.flowupdater.utils.UpdaterOptions;
+import fr.flowarg.flowupdater.versions.AbstractForgeVersion;
+import fr.flowarg.flowupdater.versions.ForgeVersionBuilder;
 import fr.flowarg.flowupdater.versions.VanillaVersion;
-import fr.flowarg.flowupdater.versions.VersionType;
 import fr.theshark34.openlauncherlib.external.ExternalLaunchProfile;
 import fr.theshark34.openlauncherlib.external.ExternalLauncher;
 import fr.theshark34.openlauncherlib.minecraft.*;
@@ -16,16 +22,15 @@ import fr.theshark34.openlauncherlib.util.Saver;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
+import java.util.List;
 
 public class Home extends ContentPanel {
     private final Saver saver = Launcher.getInstance().getSaver();
@@ -112,7 +117,7 @@ public class Home extends ContentPanel {
             public void step(Step step) {
                 Platform.runLater(() -> {
                     stepTxt = StepInfo.valueOf(step.name()).getDetails();
-                    setStatus(String.format("%s, (%s)", stepTxt, percentTxt));
+                    setStatus(String.format("%s (%s)", stepTxt, percentTxt));
                 });
             }
 
@@ -120,7 +125,7 @@ public class Home extends ContentPanel {
             public void update(long downloaded, long max) {
                 Platform.runLater(() -> {
                     percentTxt = decimalFormat.format(downloaded * 100.d / max) + "%";
-                    setStatus(String.format("%s, (%s)", stepTxt, percentTxt));
+                    setStatus(String.format("%s (%s)", stepTxt, percentTxt));
                     setProgress(downloaded, max);
                 });
             }
@@ -136,32 +141,43 @@ public class Home extends ContentPanel {
 
         try {
             final VanillaVersion vanillaVersion = new VanillaVersion.VanillaVersionBuilder()
-                    .withName("1.16.5")
-                    .withVersionType(VersionType.VANILLA)
+                    .withName(MinecraftInfos.GAME_VERSION)
+                    .withVersionType(MinecraftInfos.VERSION_TYPE)
                     .build();
+            final UpdaterOptions options = new UpdaterOptions.UpdaterOptionsBuilder()
+                    .withEnableCurseForgePlugin(true)
+                    .withEnableOptifineDownloaderPlugin(true)
+                    .build();
+
+            List<CurseFileInfos> curseMods = CurseFileInfos.getFilesFromJson(MinecraftInfos.CURSE_MODS_LIST_URL);
+            List<Mod> mods = Mod.getModsFromJson(MinecraftInfos.MODS_LIST_URL);
+
+            final AbstractForgeVersion forge = new ForgeVersionBuilder(MinecraftInfos.FORGE_VERSION_TYPE)
+                    .withForgeVersion(MinecraftInfos.FORGE_VERSION)
+                    .withCurseMods(curseMods)
+                    .withMods(mods)
+                    .build();
+
             final FlowUpdater updater = new FlowUpdater.FlowUpdaterBuilder()
                     .withVersion(vanillaVersion)
+                    .withForgeVersion(forge)
                     .withLogger(Launcher.getInstance().getLogger())
                     .withProgressCallback(callback)
+                    .withUpdaterOptions(options)
                     .build();
 
             updater.update(Launcher.getInstance().getLauncherDir());
             this.startGame(updater.getVersion().getName());
         } catch (Exception exception) {
             Launcher.getInstance().getLogger().err(exception.toString());
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erreur");
-            alert.setHeaderText("Une erreur est survenu lors de la mise à jours");
-            alert.setContentText(exception.getMessage());
-            alert.show();
         }
     }
 
     public void startGame(String gameVersion) {
         GameInfos infos = new GameInfos(
-                "Launcher",
+                "launcher-fx",
                 true,
-                new GameVersion(gameVersion, GameType.V1_13_HIGHER_VANILLA),
+                new GameVersion(gameVersion, MinecraftInfos.OLL_GAME_TYPE.setNFVD(MinecraftInfos.OLL_FORGE_DISCRIMINATOR)),
                 new GameTweak[]{}
         );
 
@@ -169,6 +185,8 @@ public class Home extends ContentPanel {
             ExternalLaunchProfile profile = MinecraftLauncher.createExternalProfile(infos, GameFolder.FLOW_UPDATER, Launcher.getInstance().getAuthInfos());
             profile.getVmArgs().add(this.getRamArgsFromSaver());
             ExternalLauncher launcher = new ExternalLauncher(profile);
+
+            Platform.runLater(() -> panelManager.getStage().hide());
 
             Process p = launcher.launch();
 
@@ -184,8 +202,6 @@ public class Home extends ContentPanel {
             exception.printStackTrace();
             Launcher.getInstance().getLogger().err(exception.toString());
         }
-
-        panelManager.getStage().hide();
     }
 
     public String getRamArgsFromSaver() {
