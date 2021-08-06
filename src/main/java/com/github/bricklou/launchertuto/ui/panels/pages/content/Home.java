@@ -170,6 +170,8 @@ public class Home extends ContentPanel {
             this.startGame(updater.getVersion().getName());
         } catch (Exception exception) {
             Launcher.getInstance().getLogger().err(exception.toString());
+            exception.printStackTrace();
+            Platform.runLater(() -> panelManager.getStage().show());
         }
     }
 
