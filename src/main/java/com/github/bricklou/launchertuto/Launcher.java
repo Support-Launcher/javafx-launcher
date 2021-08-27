@@ -1,5 +1,6 @@
 package com.github.bricklou.launchertuto;
 
+import com.github.bricklou.launchertuto.game.MinecraftInfos;
 import com.github.bricklou.launchertuto.ui.PanelManager;
 import com.github.bricklou.launchertuto.ui.panels.pages.App;
 import com.github.bricklou.launchertuto.ui.panels.pages.Login;
@@ -26,7 +27,7 @@ import java.util.UUID;
 public class Launcher extends Application {
     private static Launcher instance;
     private final ILogger logger;
-    private final Path launcherDir = GameDirGenerator.createGameDir("launcher-fx", true);
+    private final Path launcherDir = GameDirGenerator.createGameDir(MinecraftInfos.SERVER_NAME, true);
     private final Saver saver;
     private PanelManager panelManager;
     private AuthInfos authInfos = null;

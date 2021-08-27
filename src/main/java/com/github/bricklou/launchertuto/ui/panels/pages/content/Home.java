@@ -177,7 +177,7 @@ public class Home extends ContentPanel {
 
     public void startGame(String gameVersion) {
         GameInfos infos = new GameInfos(
-                "launcher-fx",
+                MinecraftInfos.SERVER_NAME,
                 true,
                 new GameVersion(gameVersion, MinecraftInfos.OLL_GAME_TYPE.setNFVD(MinecraftInfos.OLL_FORGE_DISCRIMINATOR)),
                 new GameTweak[]{}

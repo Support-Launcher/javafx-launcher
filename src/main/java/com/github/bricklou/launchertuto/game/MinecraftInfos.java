@@ -6,6 +6,8 @@ import fr.flowarg.openlauncherlib.NewForgeVersionDiscriminator;
 import fr.theshark34.openlauncherlib.minecraft.GameType;
 
 public class MinecraftInfos {
+    public static  final String SERVER_NAME = "launcher-fx";
+
     public static final String GAME_VERSION = "1.16.5";
     public static final VersionType VERSION_TYPE = VersionType.FORGE;
     public static final ForgeVersionBuilder.ForgeVersionType FORGE_VERSION_TYPE = ForgeVersionBuilder.ForgeVersionType.NEW;
