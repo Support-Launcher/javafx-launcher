@@ -8,9 +8,8 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.download.IProgressCallback;
 import fr.flowarg.flowupdater.download.Step;
-import fr.flowarg.flowupdater.download.json.CurseFileInfos;
+import fr.flowarg.flowupdater.download.json.CurseFileInfo;
 import fr.flowarg.flowupdater.download.json.Mod;
-import fr.flowarg.flowupdater.download.json.OptifineInfo;
 import fr.flowarg.flowupdater.utils.UpdaterOptions;
 import fr.flowarg.flowupdater.versions.AbstractForgeVersion;
 import fr.flowarg.flowupdater.versions.ForgeVersionBuilder;
@@ -145,11 +144,9 @@ public class Home extends ContentPanel {
                     .withVersionType(MinecraftInfos.VERSION_TYPE)
                     .build();
             final UpdaterOptions options = new UpdaterOptions.UpdaterOptionsBuilder()
-                    .withEnableCurseForgePlugin(true)
-                    .withEnableOptifineDownloaderPlugin(true)
                     .build();
 
-            List<CurseFileInfos> curseMods = CurseFileInfos.getFilesFromJson(MinecraftInfos.CURSE_MODS_LIST_URL);
+            List<CurseFileInfo> curseMods = CurseFileInfo.getFilesFromJson(MinecraftInfos.CURSE_MODS_LIST_URL);
             List<Mod> mods = Mod.getModsFromJson(MinecraftInfos.MODS_LIST_URL);
 
             final AbstractForgeVersion forge = new ForgeVersionBuilder(MinecraftInfos.FORGE_VERSION_TYPE)
@@ -159,7 +156,7 @@ public class Home extends ContentPanel {
                     .build();
 
             final FlowUpdater updater = new FlowUpdater.FlowUpdaterBuilder()
-                    .withVersion(vanillaVersion)
+                    .withVanillaVersion(vanillaVersion)
                     .withForgeVersion(forge)
                     .withLogger(Launcher.getInstance().getLogger())
                     .withProgressCallback(callback)
@@ -167,7 +164,7 @@ public class Home extends ContentPanel {
                     .build();
 
             updater.update(Launcher.getInstance().getLauncherDir());
-            this.startGame(updater.getVersion().getName());
+            this.startGame(updater.getVanillaVersion().getName());
         } catch (Exception exception) {
             Launcher.getInstance().getLogger().err(exception.toString());
             exception.printStackTrace();
