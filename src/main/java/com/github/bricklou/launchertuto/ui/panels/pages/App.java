@@ -110,62 +110,66 @@ public class App extends Panel {
 
         sidemenu.getChildren().addAll(homeBtn, settingsBtn);
 
-        // Pseudo + avatar
-        GridPane userPane = new GridPane();
-        setCanTakeAllWidth(userPane);
-        userPane.setMaxHeight(80);
-        userPane.setMinWidth(80);
-        userPane.getStyleClass().add("user-pane");
-        setBottom(userPane);
+        if (Launcher.getInstance().getAuthInfos() != null) {
+            // Pseudo + avatar
+            GridPane userPane = new GridPane();
+            setCanTakeAllWidth(userPane);
+            userPane.setMaxHeight(80);
+            userPane.setMinWidth(80);
+            userPane.getStyleClass().add("user-pane");
+            setBottom(userPane);
 
-        String avatarUrl = "https://minotar.net/avatar/" + (
-                saver.get("offline-username") != null ?
-                        "MHF_Steve.png" :
-                        Launcher.getInstance().getAuthInfos().getUuid() + ".png"
-        );
-        ImageView avatarView = new ImageView();
-        Image avatarImg = new Image(avatarUrl);
-        avatarView.setImage(avatarImg);
-        avatarView.setPreserveRatio(true);
-        avatarView.setFitHeight(50d);
-        setCenterV(avatarView);
-        setCanTakeAllSize(avatarView);
-        setLeft(avatarView);
-        avatarView.setTranslateX(15d);
-        userPane.getChildren().add(avatarView);
+            String avatarUrl = "https://minotar.net/avatar/" + (
+                    saver.get("offline-username") != null ?
+                            "MHF_Steve.png" :
+                            Launcher.getInstance().getAuthInfos().getUuid() + ".png"
+            );
+            ImageView avatarView = new ImageView();
+            Image avatarImg = new Image(avatarUrl);
+            avatarView.setImage(avatarImg);
+            avatarView.setPreserveRatio(true);
+            avatarView.setFitHeight(50d);
+            setCenterV(avatarView);
+            setCanTakeAllSize(avatarView);
+            setLeft(avatarView);
+            avatarView.setTranslateX(15d);
+            userPane.getChildren().add(avatarView);
 
-        Label usernameLabel = new Label(Launcher.getInstance().getAuthInfos().getUsername());
-        usernameLabel.setFont(Font.font("Consolas", FontWeight.BOLD, FontPosture.REGULAR, 25f));
-        setCanTakeAllSize(usernameLabel);
-        setCenterV(usernameLabel);
-        setLeft(usernameLabel);
-        usernameLabel.getStyleClass().add("username-label");
-        usernameLabel.setTranslateX(75d);
-        setCanTakeAllWidth(usernameLabel);
-        userPane.getChildren().add(usernameLabel);
+            Label usernameLabel = new Label(Launcher.getInstance().getAuthInfos().getUsername());
+            usernameLabel.setFont(Font.font("Consolas", FontWeight.BOLD, FontPosture.REGULAR, 25f));
+            setCanTakeAllSize(usernameLabel);
+            setCenterV(usernameLabel);
+            setLeft(usernameLabel);
+            usernameLabel.getStyleClass().add("username-label");
+            usernameLabel.setTranslateX(75d);
+            setCanTakeAllWidth(usernameLabel);
+            userPane.getChildren().add(usernameLabel);
 
-        Button logoutBtn = new Button();
-        FontAwesomeIconView logoutIcon = new FontAwesomeIconView(FontAwesomeIcon.SIGN_OUT);
-        logoutIcon.getStyleClass().add("logout-icon");
-        setCanTakeAllSize(logoutBtn);
-        setCenterV(logoutBtn);
-        setRight(logoutBtn);
-        logoutBtn.getStyleClass().add("logout-btn");
-        logoutBtn.setGraphic(logoutIcon);
-        logoutBtn.setOnMouseClicked(e -> {
-            if (currentPage instanceof Home && ((Home) currentPage).isDownloading()) {
-                return;
-            }
-            saver.remove("accessToken");
-            saver.remove("clientToken");
-            saver.remove("offline-username");
-            saver.save();
-            Launcher.getInstance().setAuthInfos(null);
-            this.panelManager.showPanel(new Login());
-        });
-        userPane.getChildren().add(logoutBtn);
+            Button logoutBtn = new Button();
+            FontAwesomeIconView logoutIcon = new FontAwesomeIconView(FontAwesomeIcon.SIGN_OUT);
+            logoutIcon.getStyleClass().add("logout-icon");
+            setCanTakeAllSize(logoutBtn);
+            setCenterV(logoutBtn);
+            setRight(logoutBtn);
+            logoutBtn.getStyleClass().add("logout-btn");
+            logoutBtn.setGraphic(logoutIcon);
+            logoutBtn.setOnMouseClicked(e -> {
+                if (currentPage instanceof Home && ((Home) currentPage).isDownloading()) {
+                    return;
+                }
+                saver.remove("accessToken");
+                saver.remove("clientToken");
+                saver.remove("offline-username");
+                saver.remove("msAccessToken");
+                saver.remove("msRefreshToken");
+                saver.save();
+                Launcher.getInstance().setAuthInfos(null);
+                this.panelManager.showPanel(new Login());
+            });
+            userPane.getChildren().add(logoutBtn);
 
-        sidemenu.getChildren().add(userPane);
+            sidemenu.getChildren().add(userPane);
+        }
     }
 
     @Override
