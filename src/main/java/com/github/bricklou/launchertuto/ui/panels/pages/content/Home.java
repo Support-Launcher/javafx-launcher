@@ -6,6 +6,7 @@ import com.github.bricklou.launchertuto.ui.PanelManager;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import fr.flowarg.flowupdater.FlowUpdater;
+import fr.flowarg.flowupdater.download.DownloadList;
 import fr.flowarg.flowupdater.download.IProgressCallback;
 import fr.flowarg.flowupdater.download.Step;
 import fr.flowarg.flowupdater.download.json.CurseFileInfo;
@@ -121,11 +122,11 @@ public class Home extends ContentPanel {
             }
 
             @Override
-            public void update(long downloaded, long max) {
+            public void update(DownloadList.DownloadInfo info) {
                 Platform.runLater(() -> {
-                    percentTxt = decimalFormat.format(downloaded * 100.d / max) + "%";
+                    percentTxt = decimalFormat.format(info.getDownloadedBytes() * 100.d / info.getTotalToDownloadBytes()) + "%";
                     setStatus(String.format("%s (%s)", stepTxt, percentTxt));
-                    setProgress(downloaded, max);
+                    setProgress(info.getDownloadedBytes(), info.getTotalToDownloadBytes());
                 });
             }
 
@@ -141,7 +142,6 @@ public class Home extends ContentPanel {
         try {
             final VanillaVersion vanillaVersion = new VanillaVersion.VanillaVersionBuilder()
                     .withName(MinecraftInfos.GAME_VERSION)
-                    .withVersionType(MinecraftInfos.VERSION_TYPE)
                     .build();
             final UpdaterOptions options = new UpdaterOptions.UpdaterOptionsBuilder()
                     .build();
@@ -157,7 +157,7 @@ public class Home extends ContentPanel {
 
             final FlowUpdater updater = new FlowUpdater.FlowUpdaterBuilder()
                     .withVanillaVersion(vanillaVersion)
-                    .withForgeVersion(forge)
+                    .withModLoaderVersion(forge)
                     .withLogger(Launcher.getInstance().getLogger())
                     .withProgressCallback(callback)
                     .withUpdaterOptions(options)
