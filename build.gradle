@@ -14,20 +14,17 @@ version '1.0.0'
 repositories {
     mavenCentral()
     maven {
-        url = 'https://jitpack.io/'
+        url = 'https://jitpack.io'
         name = 'JitPack'
-    }
-    maven {
-        url 'https://litarvan.github.io/maven'
     }
 }
 
 dependencies {
-    implementation 'fr.litarvan:openauth:1+'
+    implementation 'com.github.litarvan:openauth:518589d222'
     implementation 'de.jensd:fontawesomefx-fontawesome:4+'
 
-    implementation 'fr.flowarg:flowupdater:1+'
-    implementation 'fr.flowarg:openlauncherlib:3+'
+    implementation 'fr.flowarg:flowupdater:1.7.4'
+    implementation 'fr.flowarg:openlauncherlib:3.2.6'
 
     implementation 'com.github.goxr3plus:FX-BorderlessScene:4+'
     implementation 'com.github.oshi:oshi-core:5+'

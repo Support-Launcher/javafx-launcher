@@ -15,6 +15,7 @@ import fr.flowarg.flowupdater.utils.UpdaterOptions;
 import fr.flowarg.flowupdater.versions.AbstractForgeVersion;
 import fr.flowarg.flowupdater.versions.ForgeVersionBuilder;
 import fr.flowarg.flowupdater.versions.VanillaVersion;
+import fr.flowarg.openlauncherlib.NoFramework;
 import fr.theshark34.openlauncherlib.external.ExternalLaunchProfile;
 import fr.theshark34.openlauncherlib.external.ExternalLauncher;
 import fr.theshark34.openlauncherlib.minecraft.*;
@@ -173,21 +174,18 @@ public class Home extends ContentPanel {
     }
 
     public void startGame(String gameVersion) {
-        GameInfos infos = new GameInfos(
-                "launcher-fx",
-                true,
-                new GameVersion(gameVersion, MinecraftInfos.OLL_GAME_TYPE.setNFVD(MinecraftInfos.OLL_FORGE_DISCRIMINATOR)),
-                new GameTweak[]{}
-        );
-
         try {
-            ExternalLaunchProfile profile = MinecraftLauncher.createExternalProfile(infos, GameFolder.FLOW_UPDATER, Launcher.getInstance().getAuthInfos());
-            profile.getVmArgs().add(this.getRamArgsFromSaver());
-            ExternalLauncher launcher = new ExternalLauncher(profile);
+            NoFramework noFramework = new NoFramework(
+                    Launcher.getInstance().getLauncherDir(),
+                    Launcher.getInstance().getAuthInfos(),
+                    GameFolder.FLOW_UPDATER
+            );
+
+            noFramework.getAdditionalArgs().add(this.getRamArgsFromSaver());
 
             Platform.runLater(() -> panelManager.getStage().hide());
 
-            Process p = launcher.launch();
+            Process p = noFramework.launch(gameVersion, MinecraftInfos.FORGE_VERSION.split("-")[1], NoFramework.ModLoader.FORGE);
 
             Platform.runLater(() -> {
                 try {
@@ -241,6 +239,8 @@ public class Home extends ContentPanel {
         MODS("Téléchargement des mods..."),
         EXTERNAL_FILES("Téléchargement des fichier externes..."),
         POST_EXECUTIONS("Exécution post-installation..."),
+        MOD_LOADER("Installation du mod loader..."),
+        INTEGRATION("Intégration des mods..."),
         END("Finit !");
         String details;
 
