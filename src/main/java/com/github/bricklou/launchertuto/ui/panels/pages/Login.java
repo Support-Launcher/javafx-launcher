@@ -251,30 +251,34 @@ public class Login extends Panel {
     }
 
     public void authenticateMS() {
-        MicrosoftAuthenticator authenticator = new MicrosoftAuthenticator();
-        authenticator.loginWithAsyncWebview().whenComplete((response, error) -> {
-            if (error != null) {
-                Launcher.getInstance().getLogger().err(error.toString());
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erreur");
-                alert.setContentText(error.getMessage());
-                alert.show();
-                return;
-            }
+            MicrosoftAuthenticator authenticator = new MicrosoftAuthenticator();
+            authenticator.loginWithAsyncWebview().whenComplete((response, error) -> {
+                if (error != null) {
+                    Launcher.getInstance().getLogger().err(error.toString());
+                    Platform.runLater(()-> {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Erreur");
+                            alert.setContentText(error.getMessage());
+                            alert.show();
+                    });
 
-            saver.set("msAccessToken", response.getAccessToken());
-            saver.set("msRefreshToken", response.getRefreshToken());
-            saver.save();
-            Launcher.getInstance().setAuthInfos(new AuthInfos(
-                    response.getProfile().getName(),
-                    response.getAccessToken(),
-                    response.getProfile().getId()
-            ));
-            this.logger.info("Hello " + response.getProfile().getName());
+                    return;
+                }
 
-            Platform.runLater(() -> {
-                panelManager.showPanel(new App());
+                saver.set("msAccessToken", response.getAccessToken());
+                saver.set("msRefreshToken", response.getRefreshToken());
+                saver.save();
+                Launcher.getInstance().setAuthInfos(new AuthInfos(
+                        response.getProfile().getName(),
+                        response.getAccessToken(),
+                        response.getProfile().getId()
+                ));
+
+                Launcher.getInstance().getLogger().info("Hello " + response.getProfile().getName());
+
+                Platform.runLater(() -> {
+                    panelManager.goToApp();
+                });
             });
-        });
-    }
+        }
 }
