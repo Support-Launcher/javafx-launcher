@@ -11,18 +11,25 @@ version '1.0.0'
 repositories {
     mavenCentral()
     maven {
-        url = 'https://jitpack.io/'
+        url = 'https://litarvan.github.io/maven'
+        name = 'LitarvanMaven'
+    }
+
+    maven {
+        url = 'https://jitpack.io'
         name = 'JitPack'
     }
 }
 
 dependencies {
+    implementation 'fr.litarvan:openauth:1.1.6'
     implementation 'de.jensd:fontawesomefx:8.9'
 
     implementation 'fr.flowarg:flowupdater:1.8.+'
     implementation 'fr.flowarg:openlauncherlib:3.+'
 
     implementation group: 'com.github.goxr3plus', name: 'FX-BorderlessScene', version: '4.4.0'
+    implementation 'com.github.oshi:oshi-core:5+'
 }
 
 application {
