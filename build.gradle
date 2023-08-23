@@ -1,6 +1,6 @@
 plugins {
     id 'idea'
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java-library'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.13'
@@ -14,16 +14,21 @@ version '1.0.0'
 repositories {
     mavenCentral()
     maven {
+        url = 'https://litarvan.github.io/maven'
+        name = 'LitarvanMaven'
+    }
+
+    maven {
         url = 'https://jitpack.io'
         name = 'JitPack'
     }
 }
 
 dependencies {
-    implementation 'com.github.litarvan:openauth:518589d222'
-    implementation 'de.jensd:fontawesomefx-fontawesome:4+'
+    implementation 'fr.litarvan:openauth:1.1.6'
+    implementation 'fr.flowarg:materialdesignfontfx:7.2.96-2'
 
-    implementation 'fr.flowarg:flowupdater:1.7.4'
+    implementation 'fr.flowarg:flowupdater:1.8.+'
     implementation 'fr.flowarg:openlauncherlib:3.2.6'
 
     implementation 'com.github.goxr3plus:FX-BorderlessScene:4+'

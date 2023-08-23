@@ -2,8 +2,8 @@ package com.github.bricklou.launchertuto.ui.panels.partials;
 
 import com.github.bricklou.launchertuto.ui.PanelManager;
 import com.github.bricklou.launchertuto.ui.panel.Panel;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import fr.flowarg.materialdesignfontfx.MaterialDesignIcon;
+import fr.flowarg.materialdesignfontfx.MaterialDesignIconView;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -62,9 +62,9 @@ public class TopBar extends Panel {
         /*
          * TopBar buttons configuration
          */
-        FontAwesomeIconView closeBtn = new FontAwesomeIconView(FontAwesomeIcon.WINDOW_CLOSE);
-        FontAwesomeIconView fullscreenBtn = new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MAXIMIZE);
-        FontAwesomeIconView minimizeBtn = new FontAwesomeIconView(FontAwesomeIcon.WINDOW_MINIMIZE);
+        final var closeBtn = new MaterialDesignIconView<>(MaterialDesignIcon.W.WINDOW_CLOSE);
+        final var fullscreenBtn = new MaterialDesignIconView<>(MaterialDesignIcon.W.WINDOW_MAXIMIZE);
+        final var minimizeBtn = new MaterialDesignIconView<>(MaterialDesignIcon.W.WINDOW_MINIMIZE);
         setCanTakeAllWidth(closeBtn, fullscreenBtn, minimizeBtn);
 
         closeBtn.setFill(Color.WHITE);

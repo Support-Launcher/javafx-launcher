@@ -3,22 +3,20 @@ package com.github.bricklou.launchertuto.ui.panels.pages.content;
 import com.github.bricklou.launchertuto.Launcher;
 import com.github.bricklou.launchertuto.game.MinecraftInfos;
 import com.github.bricklou.launchertuto.ui.PanelManager;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import fr.flowarg.flowupdater.FlowUpdater;
 import fr.flowarg.flowupdater.download.DownloadList;
 import fr.flowarg.flowupdater.download.IProgressCallback;
 import fr.flowarg.flowupdater.download.Step;
 import fr.flowarg.flowupdater.download.json.CurseFileInfo;
 import fr.flowarg.flowupdater.download.json.Mod;
-import fr.flowarg.flowupdater.utils.UpdaterOptions;
+import fr.flowarg.flowupdater.utils.ModFileDeleter;
 import fr.flowarg.flowupdater.versions.AbstractForgeVersion;
 import fr.flowarg.flowupdater.versions.ForgeVersionBuilder;
 import fr.flowarg.flowupdater.versions.VanillaVersion;
+import fr.flowarg.materialdesignfontfx.MaterialDesignIcon;
+import fr.flowarg.materialdesignfontfx.MaterialDesignIconView;
 import fr.flowarg.openlauncherlib.NoFramework;
-import fr.theshark34.openlauncherlib.external.ExternalLaunchProfile;
-import fr.theshark34.openlauncherlib.external.ExternalLauncher;
-import fr.theshark34.openlauncherlib.minecraft.*;
+import fr.theshark34.openlauncherlib.minecraft.GameFolder;
 import fr.theshark34.openlauncherlib.util.Saver;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -88,7 +86,7 @@ public class Home extends ContentPanel {
     private void showPlayButton() {
         boxPane.getChildren().clear();
         Button playBtn = new Button("Jouer");
-        FontAwesomeIconView playIcon = new FontAwesomeIconView(FontAwesomeIcon.GAMEPAD);
+        final var playIcon = new MaterialDesignIconView<>(MaterialDesignIcon.G.GAMEPAD);
         playIcon.getStyleClass().add("play-icon");
         setCanTakeAllSize(playBtn);
         setCenterH(playBtn);
@@ -105,7 +103,7 @@ public class Home extends ContentPanel {
         setProgress(0, 0);
         boxPane.getChildren().addAll(progressBar, stepLabel, fileLabel);
 
-        Platform.runLater(() -> new Thread(this::update).start());
+        new Thread(this::update).start();
     }
 
     public void update() {
@@ -144,8 +142,6 @@ public class Home extends ContentPanel {
             final VanillaVersion vanillaVersion = new VanillaVersion.VanillaVersionBuilder()
                     .withName(MinecraftInfos.GAME_VERSION)
                     .build();
-            final UpdaterOptions options = new UpdaterOptions.UpdaterOptionsBuilder()
-                    .build();
 
             List<CurseFileInfo> curseMods = CurseFileInfo.getFilesFromJson(MinecraftInfos.CURSE_MODS_LIST_URL);
             List<Mod> mods = Mod.getModsFromJson(MinecraftInfos.MODS_LIST_URL);
@@ -154,6 +150,7 @@ public class Home extends ContentPanel {
                     .withForgeVersion(MinecraftInfos.FORGE_VERSION)
                     .withCurseMods(curseMods)
                     .withMods(mods)
+                    .withFileDeleter(new ModFileDeleter(true))
                     .build();
 
             final FlowUpdater updater = new FlowUpdater.FlowUpdaterBuilder()
@@ -161,15 +158,13 @@ public class Home extends ContentPanel {
                     .withModLoaderVersion(forge)
                     .withLogger(Launcher.getInstance().getLogger())
                     .withProgressCallback(callback)
-                    .withUpdaterOptions(options)
                     .build();
 
             updater.update(Launcher.getInstance().getLauncherDir());
             this.startGame(updater.getVanillaVersion().getName());
-        } catch (Exception exception) {
-            Launcher.getInstance().getLogger().err(exception.toString());
-            exception.printStackTrace();
-            Platform.runLater(() -> panelManager.getStage().show());
+        } catch (Exception e) {
+            Launcher.getInstance().getLogger().printStackTrace(e);
+            Platform.runLater(() -> this.panelManager.getStage().show());
         }
     }
 
@@ -181,9 +176,7 @@ public class Home extends ContentPanel {
                     GameFolder.FLOW_UPDATER
             );
 
-            noFramework.getAdditionalArgs().add(this.getRamArgsFromSaver());
-
-            Platform.runLater(() -> panelManager.getStage().hide());
+            noFramework.getAdditionalVmArgs().add(this.getRamArgsFromSaver());
 
             Process p = noFramework.launch(gameVersion, MinecraftInfos.FORGE_VERSION.split("-")[1], NoFramework.ModLoader.FORGE);
 
@@ -192,12 +185,11 @@ public class Home extends ContentPanel {
                     p.waitFor();
                     Platform.exit();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Launcher.getInstance().getLogger().printStackTrace(e);
                 }
             });
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            Launcher.getInstance().getLogger().err(exception.toString());
+        } catch (Exception e) {
+            Launcher.getInstance().getLogger().printStackTrace(e);
         }
     }
 
@@ -241,8 +233,9 @@ public class Home extends ContentPanel {
         POST_EXECUTIONS("Exécution post-installation..."),
         MOD_LOADER("Installation du mod loader..."),
         INTEGRATION("Intégration des mods..."),
-        END("Finit !");
-        String details;
+        END("Fini !");
+
+        final String details;
 
         StepInfo(String details) {
             this.details = details;

@@ -6,8 +6,8 @@ import com.github.bricklou.launchertuto.ui.panel.Panel;
 import com.github.bricklou.launchertuto.ui.panels.pages.content.ContentPanel;
 import com.github.bricklou.launchertuto.ui.panels.pages.content.Home;
 import com.github.bricklou.launchertuto.ui.panels.pages.content.Settings;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import fr.flowarg.materialdesignfontfx.MaterialDesignIcon;
+import fr.flowarg.materialdesignfontfx.MaterialDesignIconView;
 import fr.theshark34.openlauncherlib.util.Saver;
 import javafx.geometry.HPos;
 import javafx.scene.Node;
@@ -94,7 +94,7 @@ public class App extends Panel {
         // Navigation
         homeBtn = new Button("Accueil");
         homeBtn.getStyleClass().add("sidemenu-nav-btn");
-        homeBtn.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.HOME));
+        homeBtn.setGraphic(new MaterialDesignIconView<>(MaterialDesignIcon.H.HOME));
         setCanTakeAllSize(homeBtn);
         setTop(homeBtn);
         homeBtn.setTranslateY(90d);
@@ -102,7 +102,7 @@ public class App extends Panel {
 
         settingsBtn = new Button("Paramètres");
         settingsBtn.getStyleClass().add("sidemenu-nav-btn");
-        settingsBtn.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.GEARS));
+        settingsBtn.setGraphic(new MaterialDesignIconView<>(MaterialDesignIcon.C.COG));
         setCanTakeAllSize(settingsBtn);
         setTop(settingsBtn);
         settingsBtn.setTranslateY(130d);
@@ -146,7 +146,7 @@ public class App extends Panel {
             userPane.getChildren().add(usernameLabel);
 
             Button logoutBtn = new Button();
-            FontAwesomeIconView logoutIcon = new FontAwesomeIconView(FontAwesomeIcon.SIGN_OUT);
+            final var logoutIcon = new MaterialDesignIconView<>(MaterialDesignIcon.L.LOGOUT);
             logoutIcon.getStyleClass().add("logout-icon");
             setCanTakeAllSize(logoutBtn);
             setCenterV(logoutBtn);

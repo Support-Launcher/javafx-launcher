@@ -2,8 +2,8 @@ package com.github.bricklou.launchertuto.ui.panels.pages.content;
 
 import com.github.bricklou.launchertuto.Launcher;
 import com.github.bricklou.launchertuto.ui.PanelManager;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import fr.flowarg.materialdesignfontfx.MaterialDesignIcon;
+import fr.flowarg.materialdesignfontfx.MaterialDesignIconView;
 import fr.theshark34.openlauncherlib.util.Saver;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -108,7 +108,7 @@ public class Settings extends ContentPanel {
          */
         Button saveBtn = new Button("Enregistrer");
         saveBtn.getStyleClass().add("save-btn");
-        FontAwesomeIconView iconView = new FontAwesomeIconView(FontAwesomeIcon.SAVE);
+        final var iconView = new MaterialDesignIconView<>(MaterialDesignIcon.F.FLOPPY);
         iconView.getStyleClass().add("save-icon");
         saveBtn.setGraphic(iconView);
         setCanTakeAllSize(saveBtn);

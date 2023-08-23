@@ -8,7 +8,6 @@ import fr.litarvan.openauth.AuthenticationException;
 import fr.litarvan.openauth.Authenticator;
 import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import fr.litarvan.openauth.model.AuthAgent;
-import fr.litarvan.openauth.model.AuthProfile;
 import fr.litarvan.openauth.model.response.AuthResponse;
 import fr.theshark34.openlauncherlib.minecraft.AuthInfos;
 import fr.theshark34.openlauncherlib.util.Saver;
@@ -271,14 +270,14 @@ public class Login extends Panel {
                 Launcher.getInstance().setAuthInfos(new AuthInfos(
                         response.getProfile().getName(),
                         response.getAccessToken(),
-                        response.getProfile().getId()
+                        response.getProfile().getId(),
+                        response.getXuid(),
+                        response.getClientId()
                 ));
 
                 Launcher.getInstance().getLogger().info("Hello " + response.getProfile().getName());
 
-                Platform.runLater(() -> {
-                    panelManager.goToApp();
-                });
+                Platform.runLater(() -> panelManager.showPanel(new App()));
             });
         }
 }

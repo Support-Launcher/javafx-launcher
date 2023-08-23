@@ -19,7 +19,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
@@ -34,9 +35,15 @@ public class Launcher extends Application {
     public Launcher() {
         instance = this;
         this.logger = new Logger("[LauncherFX]", this.launcherDir.resolve("launcher.log"));
-        if (!this.launcherDir.toFile().exists()) {
-            if (!this.launcherDir.toFile().mkdir()) {
+        if (Files.notExists(this.launcherDir))
+        {
+            try
+            {
+                Files.createDirectory(this.launcherDir);
+            } catch (IOException e)
+            {
                 this.logger.err("Unable to create launcher folder");
+                this.logger.printStackTrace(e);
             }
         }
 
@@ -96,7 +103,9 @@ public class Launcher extends Application {
                 this.setAuthInfos(new AuthInfos(
                         response.getProfile().getName(),
                         response.getAccessToken(),
-                        response.getProfile().getId()
+                        response.getProfile().getId(),
+                        response.getXuid(),
+                        response.getClientId()
                 ));
                 return true;
             } catch (MicrosoftAuthenticationException e) {
