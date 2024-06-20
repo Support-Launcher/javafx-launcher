@@ -42,6 +42,12 @@ On entame la mise à jour et le lancement du jeu.
 
 [Tutorial Vidéo](https://youtu.be/kkQh2ZrcznM)
 
+#### [07 - Lancement avec Forge](https://github.com/Support-Launcher/javafx-launcher/tree/video-7)
+
+On configure le launcher pour pouvoir lancer un client Forge.
+
+[Tutorial Vidéo](https://youtu.be/I17QqrO0rwE)
+
 ## Crédits
 
 Merci à [Flow Arg](https://github.com/FlowArg) pour ses librairies et pour m'avoir accompagnés tout au long des vidéos. 
